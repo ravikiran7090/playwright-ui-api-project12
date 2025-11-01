@@ -1,0 +1,24 @@
+const { expect } = require("@playwright/test");
+
+class CartPage {
+    constructor(page) {
+        this.page = page;
+        this.cartproducts = page.locator("div li").first();
+        this.checkout = page.locator("text=Checkout");
+
+    }
+    async VerifyProductIsDisplayed(productName) {
+        await this.cartproducts.waitFor();
+        const bool = await this.getProductLocator(productName).isVisible();
+        expect(bool).toBeTruthy();
+    }
+    async Checkout() {
+        await this.checkout.click();
+    }
+    getProductLocator(productName) {
+        return this.page.locator("h3:has-text('" + productName + "')");
+    }
+
+
+}
+module.exports = { CartPage };
